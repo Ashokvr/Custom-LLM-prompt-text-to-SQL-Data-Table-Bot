@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-
 import streamlit as st
 import os
 import sqlite3
@@ -12,7 +11,6 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 load_dotenv() ## load all the environemnt variables
 ## Function To Load Google Gemini Model and provide queries as response
-
 def get_gemini_response(question,prompt):
     model=genai.GenerativeModel('gemini-pro')
     response=model.generate_content([prompt[0],question])
