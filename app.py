@@ -1,3 +1,5 @@
+
+#region Python Libraries
 from dotenv import load_dotenv
 import streamlit as st
 import os
@@ -5,19 +7,21 @@ import sqlite3
 import pandas as pd
 import google.generativeai as genai
 import re
-## Configure Genai Key
+#endregion
 
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-
+#region Configure Genai Key
 load_dotenv() ## load all the environemnt variables
-## Function To Load Google Gemini Model and provide queries as response
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+#endregion
+
+#region Load Google Gemini Model and provide queries as response
 def get_gemini_response(question,prompt):
     model=genai.GenerativeModel('gemini-pro')
     response=model.generate_content([prompt[0],question])
     return response.text
+#endregion
 
-## Fucntion To retrieve data from the database
-
+#region Fucntion To retrieve data from the database
 def read_sql_query(sql,db):
     conn=sqlite3.connect(db)
     cur=conn.cursor()
@@ -35,8 +39,9 @@ def read_sql_query(sql,db):
     conn.commit()
     conn.close()
     return df
+#endregion
 
-## Fucntion To retrieve database info and results custom prompt
+#region Fucntion To Manupulate database using custom prompt
 def getdatabaseinfo():
     dbtableinfo=""
     tablecolumninfo=""
@@ -71,13 +76,14 @@ def getdatabaseinfo():
     """
     ]
     return prompt
+#endregion
 
+#region UI Control
 if 'conversation' not in st.session_state:
     st.session_state.conversation = []
-
 st.header("Custom Database LLM Text to SQL")
 
-def handle_enter():
+def handle_enter(): #Function to modify GenAI response
     question = st.session_state.question  # Access the user input from the session state
     if question:  # Check if the input is not empty
         try:
@@ -107,7 +113,7 @@ def handle_enter():
 conversation_container = st.container()
 question=st.text_input("Ask a question about University Information:", key='question', on_change=handle_enter)
 
-with conversation_container:
+with conversation_container: # Control the response according to requirement
    for item in st.session_state.conversation:
     if isinstance(item, pd.DataFrame):
         # If the item is a DataFrame, display it as a table
@@ -115,7 +121,6 @@ with conversation_container:
     else:
         # Otherwise, display the item as text
         st.write(item)
-
-
+#endregion
 
 

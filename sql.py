@@ -1,13 +1,11 @@
 import sqlite3
 
-## Connectt to SQlite
+#region Connectt to SQlite
 connection=sqlite3.connect("University.db")
-
-# Create a cursor object to insert record,create table
-
 cursor=connection.cursor()
+#endregion
 
-## create the table
+#region create the table
 student_info="""
 CREATE TABLE students (
   student_id INT PRIMARY KEY,
@@ -57,15 +55,18 @@ CREATE TABLE majors (
   major_name VARCHAR(50)
 );
 """
+#endregion
+
+#region  Excecute Tables
 cursor.execute(student_info)
 cursor.execute(courses_info)
 cursor.execute(enrollments_info)
 cursor.execute(grades_info)
 cursor.execute(prereq_info)
 cursor.execute(major_info)
+#endregion
 
-
-## Insert Some more records
+#region Insert Some more records
 
 # cursor.execute('''Insert Into STUDENT values('Krish','Data Science','A',90)''')
 # cursor.execute('''Insert Into STUDENT values('Sudhanshu','Data Science','B',100)''')
@@ -133,9 +134,9 @@ cursor.execute('''INSERT INTO majors (major_id, major_name) VALUES
 (3, 'Physics'),
 (4, 'Engineering'),
 (5, 'Biology');''')
+#endregion
 
-## Disspaly ALl the records
-
+#region Display
 print("The isnerted records are")
 data=cursor.execute('''Select * from students''')
 for row in data:
@@ -144,3 +145,5 @@ for row in data:
 ## Commit your changes int he databse
 connection.commit()
 connection.close()
+
+#endregion
