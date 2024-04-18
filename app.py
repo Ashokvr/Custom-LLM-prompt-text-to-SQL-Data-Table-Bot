@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-load_dotenv() ## load all the environemnt variables
 
 import streamlit as st
 import os
@@ -11,6 +10,7 @@ import re
 
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
+load_dotenv() ## load all the environemnt variables
 ## Function To Load Google Gemini Model and provide queries as response
 
 def get_gemini_response(question,prompt):
@@ -31,7 +31,6 @@ def read_sql_query(sql,db):
         df = pd.DataFrame(rows, columns=column_headers)
         df.columns = [col.replace('_', ' ').title() for col in df.columns]
         df.index = range(1, len(df) + 1)
-        print("hello")
     else:
         cur.execute(sql)
         df.add("Changes effected")
